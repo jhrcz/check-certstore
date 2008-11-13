@@ -4,6 +4,9 @@
 
 supportedCertTypes="pem|crt|p12|jks"
 exitStatus=0
+sumCritical=0
+sumOK=0
+sumWarning=0
 
 function setColor
 {
@@ -134,7 +137,7 @@ do
 						if [ "$(date -d "$not_after" +%s)" -lt "$(date -d "today" +%s)" ]
 						then
 							exitStatus=2
-							#echo " status: CRITICAL"
+							((sumCritical++))
 							setColor red
 							echo " status: CRITICAL"
 							setColor reset
@@ -142,10 +145,12 @@ do
 							if [ "$(date -d "$not_after" +%s)" -lt "$(date -d "today + 1 month" +%s)" ]
 							then
 								exitStatus=2
+								((sumWarning++))
 								setColor yellow
 								echo " status: WARNING"
 								setColor reset
 							else
+								((sumOK++))
 								setColor green
 								echo " status: ok"
 								setColor reset
@@ -163,7 +168,16 @@ do
 done
 
 echo
-echo "[report]"
-echo " status: $exitStatus"
+echo "[nagiosreport]"
+case "${exitStatus}" in
+	0)
+		echo "certs ok - ok:$sumOK warning:$sumWarning critical:$sumCritical"
+		;;
+	1)
+		echo "CERTS WARN - ok:$sumOK warning:$sumWarning critical:$sumCritical"
+		;;
+	*)
+		echo "CERTS CRITICAL - ok:$sumOK warning:$sumWarning critical:$sumCritical"
+		;;
+esac
 exit $exitStatus
-	
