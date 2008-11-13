@@ -1,0 +1,5 @@
+nagios-plugins-certstore (2.0) unstable; urgency=low
+
+  * Initial Release.
+
+ -- jahor <jahor@unknown>  Fri, 14 Nov 2008 00:12:29 +0100

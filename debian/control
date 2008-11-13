@@ -1,0 +1,12 @@
+Source: nagios-plugins-certstore
+Section: unknown
+Priority: extra
+Maintainer: jahor <jahor@unknown>
+Build-Depends: debhelper (>= 5)
+Standards-Version: 3.7.2
+
+Package: nagios-plugins-certstore
+Architecture: all
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: <insert up to 60 chars description>
+ <insert long description, indented with spaces>
