@@ -5,11 +5,29 @@
 supportedCertTypes="pem|crt|p12|jks"
 exitStatus=0
 
-BLUE='\E[34m'
-RED='\E[31m'
-YELLOW='\E[33m'
-GREEN='\E[32m'
-WHITE='\E[37m'
+function setColor
+{
+	case ${1} in
+		blue)
+			tput setf 1
+			;;
+		red)
+			tput setf 4
+			;;
+		yellow)
+			tput setf 3
+			;;
+		green)
+			tput setf 2
+			;;
+		white)
+			tput setf 7
+			;;
+		reset)
+			tput sgr0
+			;;
+	esac
+}
 
 # reset terminal to standard colors
 function resetColor
@@ -71,7 +89,9 @@ echo "Checking validity of certificates:"
 for certFile in "${certFiles[@]}"
 do
 	#echo "[cert $certFile]"
-	echo -e "${WHITE}[multicert $certFile]" ; resetColor
+	setColor white
+	echo "[multicert $certFile]"
+	setColor reset
 	multiCertFileTXT="${certFile}.txt"
 	if [ -f "${multiCertFileTXT}" -a "${multiCertFileTXT}" -nt "${certFile}" ]
 	then
@@ -84,7 +104,9 @@ do
 				do
 					certFileTXT=$(mktemp)
 					grep "^${subCertIndex}:" "${multiCertFileTXT}" | cut -d : -f 2- > "${certFileTXT}"
-					echo -e "${BLUE}[cert ${certFile}:${subCertIndex}]" ; resetColor
+					setColor blue
+					echo "[cert ${certFile}:${subCertIndex}]"
+					setColor reset
 					not_before=$(grep "Not Before" ${certFileTXT} | cut -d : -f 2- | sed -e "s#^ ##" | head -n 1 )
 					not_after=$(grep "Not After" ${certFileTXT} | cut -d : -f 2-  | sed -e "s#^ ##" | head -n 1 )
 					[ -n "$not_before" ] || ERROR "could not detect not-before date from cert in txt from"
@@ -106,16 +128,20 @@ do
 						then
 							exitStatus=2
 							#echo " status: CRITICAL"
-							echo -e " ${RED}status: CRITICAL" ; resetColor
+							setColor red
+							echo " status: CRITICAL"
+							setColor reset
 						else
 							if [ "$(date -d "$not_after" +%s)" -lt "$(date -d "today + 1 month" +%s)" ]
 							then
 								exitStatus=2
-								#echo " status: WARNING"
-								echo -e " ${YELLOW}status: WARNING" ; resetColor
+								setColor yellow
+								echo " status: WARNING"
+								setColor reset
 							else
-								#echo " status: ok"
-								echo -e " ${GREEN}status: ok" ; resetColor
+								setColor green
+								echo " status: ok"
+								setColor reset
 							fi	
 						fi
 					fi
