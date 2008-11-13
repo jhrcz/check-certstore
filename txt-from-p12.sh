@@ -7,7 +7,8 @@ tmpFile=$(mktemp)
 
 openssl pkcs12 -in $certFile -clcerts -nokeys -out $tmpFile
 
-$(dirname $0)/txt-from-pem.sh $tmpFile
-mv $tmpFile.txt ${certFile}.txt
+$(dirname $0)/txt-from-pem.sh ${tmpFile}
+cp ${tmpFile}.txt ${certFile}.txt
 
-rm $tmpFile
+rm ${tmpFile}
+rm ${tmpFile}.txt
