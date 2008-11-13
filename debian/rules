@@ -50,7 +50,7 @@ install: build
 	# Add here commands to install the package into debian/nagios-plugins-certstore.
 	#$(MAKE) DESTDIR=$(CURDIR)/debian/nagios-plugins-certstore install
 
-	install -D 	check-certs2.sh 	debian/nagios-plugins-certstore/usr/lib/nagios/plugins/chech_certstore
+	install -D 	check-certs2.sh 	debian/nagios-plugins-certstore/usr/lib/nagios/plugins/check_certstore
 	install -D 	txt-from-jks.sh 	debian/nagios-plugins-certstore/usr/bin/txt-from-jks.sh
 	install -D 	txt-from-pem.sh 	debian/nagios-plugins-certstore/usr/bin/txt-from-pem.sh
 	install -D 	txt-from-p12.sh 	debian/nagios-plugins-certstore/usr/bin/txt-from-p12.sh
