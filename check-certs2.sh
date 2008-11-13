@@ -97,13 +97,13 @@ do
 					# check expiration date
 					if [ "$(date -d "$not_after" +%s)" -lt "$(date -d "today" +%s)" ]
 					then
-						exitStatus=1
+						exitStatus=2
 						#echo " status: CRITICAL"
 						echo -e " ${RED}status: CRITICAL" ; resetColor
 					else
 						if [ "$(date -d "$not_after" +%s)" -lt "$(date -d "today + 1 month" +%s)" ]
 						then
-							exitStatus=1
+							exitStatus=2
 							#echo " status: WARNING"
 							echo -e " ${YELLOW}status: WARNING" ; resetColor
 						else
@@ -115,7 +115,7 @@ do
 				;;
 		esac
 	else
-		exitStatus=1
+		exitStatus=2
 		ERROR "Missing or not updated TXT form of certificate"
 	fi
 done
