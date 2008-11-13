@@ -68,15 +68,20 @@ function getCertType
 	esac
 }
 
+argType=""
+if [ -f "${1}" ]
+then
+	argType=file
+elif [ -d "${1}" ]
+then
+	argType=dir
+fi
 
-case "${1}" in
+case "${argType}" in
 	file)
-		shift
 		certFiles=( "${1}" )
 		;;
 	dir)
-		shift
-		dir=${1}
 		certFiles=( $( listSupportedCertsInDir ${1}) )
 		;;
 	*)
