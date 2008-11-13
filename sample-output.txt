@@ -1,0 +1,44 @@
+jahor@deebee:~/WORKDIR/etnwrk/check-certs2$ ./test.sh
+Checking validity of certificates:
+[cert java/caetn-jan.horacek@etnetera.cz.p12]
+ not-before: 2007-01-18
+ not-after:  2009-01-17
+[cert java/elta.p12]
+ERROR: could not detect not-before date from cert in txt from
+ERROR: could not detect not-after date from cert in txt from
+[report]
+ status: 0
+
+
+Checking validity of certificates:
+[cert misc/apache--www.cz.o2.com-crt.pem]
+ not-before: 2006-08-11
+ not-after:  2008-08-11
+[cert misc/apache--www.wholesale.cz.crt]
+ not-before: 2006-05-26
+ not-after:  2009-05-26
+[cert misc/jnp--28422-o2_smsConnector.jks]
+ not-before: 2006-09-12
+ not-after:  2016-09-09
+[report]
+ status: 0
+
+
+Checking validity of certificates:
+[cert webserver/edit.ilegalne.cz-tmobile2.pem]
+ERROR: Missing or not updated TXT form of certificate
+[cert webserver/edit.ilegalne.cz-tmobile.pem]
+ not-before: 2008-10-27
+ not-after:  2009-10-27
+[report]
+ status: 1
+
+
+Checking validity of certificates:
+[cert webserver/edit.ilegalne.cz-tmobile.pem]
+ not-before: 2008-10-27
+ not-after:  2009-10-27
+[report]
+ status: 0
+jahor@deebee:~/WORKDIR/etnwrk/check-certs2$
+
