@@ -84,7 +84,7 @@ case "${1}" in
 		;;
 esac
 
-echo "Checking validity of certificates:"
+#echo "Checking validity of certificates:"
 
 for certFile in "${certFiles[@]}"
 do
