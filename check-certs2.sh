@@ -94,6 +94,7 @@ esac
 for certFile in "${certFiles[@]}"
 do
 	#echo "[cert $certFile]"
+	echo
 	setColor white
 	echo "[multicert $certFile]"
 	setColor reset
@@ -109,6 +110,7 @@ do
 				do
 					certFileTXT=$(mktemp)
 					grep "^${subCertIndex}:" "${multiCertFileTXT}" | cut -d : -f 2- > "${certFileTXT}"
+					echo
 					setColor blue
 					echo "[cert ${certFile}:${subCertIndex}]"
 					setColor reset
@@ -160,6 +162,7 @@ do
 	fi
 done
 
+echo
 echo "[report]"
 echo " status: $exitStatus"
 exit $exitStatus
