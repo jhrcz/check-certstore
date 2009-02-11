@@ -81,7 +81,11 @@ function getCertType
 }
 
 argType=""
-if [ -f "${1}" ]
+if [ "${1}" = "list"  ]
+then
+	argType=list
+	shift
+elif [ -f "${1}" ]
 then
 	argType=file
 elif [ -d "${1}" ]
@@ -95,6 +99,9 @@ case "${argType}" in
 		;;
 	dir)
 		certFiles=( $( listSupportedCertsInDir ${1}) )
+		;;
+	list)
+		certFiles=( $( cat ${1}) )
 		;;
 	*)
 		ERROR "Bad arguments."
@@ -174,6 +181,8 @@ do
 								setColor reset
 							fi	
 						fi
+					else
+						((sumCritical++))
 					fi
 					rm "${certFileTXT}"
 				done
