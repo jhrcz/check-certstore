@@ -104,9 +104,18 @@ case "${argType}" in
 		certFiles=( $( cat ${1}) )
 		;;
 	*)
+		exitStatus=2
 		ERROR "Bad arguments."
+		ERROR_MSG="bad-cmd-arg $ERROR_MSG"
 		;;
 esac
+
+if [ -z "$certFiles" ]
+then
+	exitStatus=2
+	ERROR "Bad arguments."
+	ERROR_MSG="no-certfile-specified $ERROR_MSG"
+fi
 
 #echo "Checking validity of certificates:"
 

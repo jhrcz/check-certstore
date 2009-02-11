@@ -1,3 +1,9 @@
+nagios-plugins-certstore (2.2) jaunty; urgency=low
+
+  * certfificates in lilst file possibility
+
+ -- jahor <jahor@deebee>  Thu, 12 Feb 2009 00:00:34 +0100
+
 nagios-plugins-certstore (2.1) jaunty; urgency=low
 
   * verbose output, nagios compatible output, colorized only with env variable set
