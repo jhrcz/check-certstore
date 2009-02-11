@@ -15,7 +15,7 @@ sumCritical=0
 sumOK=0
 sumWarning=0
 COLORIZED_OUTPUT=NO
-ERROR_MSG=none
+ERROR_MSG=""
 
 function setColor
 {
@@ -131,12 +131,12 @@ do
 					if [ -z "$not_before" ]
 					then
 						ERROR "could not detect not-before date from cert in txt from"
-						ERROR_MSG="bad TXT format"
+						ERROR_MSG="bad-txt-format $ERROR_MSG"
 					fi
 					if [ -z "$not_after" ]
 					then
 						ERROR "could not detect not-after date from cert in txt from"
-						ERROR_MSG="bad TXT format"
+						ERROR_MSG="bad-txt-format $ERROR_MSG"
 					fi
 					if [ -n "$not_before" -a -n "$not_after" ]
 					then
@@ -157,6 +157,7 @@ do
 							((sumCritical++))
 							setColor red
 							echo " status: CRITICAL"
+							ERROR_MSG="${certFile}:${subCertIndex} $ERROR_MSG"
 							setColor reset
 						else
 							if [ "$(date -d "$not_after" +%s)" -lt "$(date -d "today + 1 month" +%s)" ]
@@ -181,7 +182,7 @@ do
 	else
 		exitStatus=2
 		ERROR "Missing or not updated TXT form of certificate"
-		ERROR_MSG="Missing/old TXT form of certificate"
+		ERROR_MSG="missing-or-old-txt"
 	fi
 done
 
@@ -192,6 +193,11 @@ echo "[nagiosreport]"
 if [ "$VERBOSE" != "YES" ]
 then
 	exec 1>&3
+fi
+
+if [ -z "$ERROR_MSG" ]
+then
+	ERROR_MSG=none
 fi
 
 case "${exitStatus}" in

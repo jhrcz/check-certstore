@@ -1,3 +1,9 @@
+nagios-plugins-certstore (2.1) jaunty; urgency=low
+
+  * verbose output, nagios compatible output, colorized only with env variable set
+
+ -- jahor <jahor@deebee>  Wed, 11 Feb 2009 23:17:55 +0100
+
 nagios-plugins-certstore (2.0) unstable; urgency=low
 
   * Initial Release.
