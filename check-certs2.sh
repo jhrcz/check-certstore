@@ -2,32 +2,41 @@
 
 [ "${DEBUG}" = "YES" ] && set -x
 
+# in case of nonverbose / nagios-used run stdout is kept clean
+if [ "$VERBOSE" != "YES" ]
+then
+	exec 3>&1
+	exec 1>/tmp/check_certstore.log
+fi
+
 supportedCertTypes="pem|crt|p12|jks"
 exitStatus=0
 sumCritical=0
 sumOK=0
 sumWarning=0
+COLORIZED_OUTPUT=NO
+ERROR_MSG=none
 
 function setColor
 {
 	case ${1} in
 		blue)
-			tput setf 1
+			[ "$COLORIZED_OUTPUT" = "YES" ] && tput setf 1
 			;;
 		red)
-			tput setf 4
+			[ "$COLORIZED_OUTPUT" = "YES" ] && tput setf 4
 			;;
 		yellow)
-			tput setf 3
+			[ "$COLORIZED_OUTPUT" = "YES" ] && tput setf 3
 			;;
 		green)
-			tput setf 2
+			[ "$COLORIZED_OUTPUT" = "YES" ] && tput setf 2
 			;;
 		white)
-			tput setf 7
+			[ "$COLORIZED_OUTPUT" = "YES" ] && tput setf 7
 			;;
 		reset)
-			tput sgr0
+			[ "$COLORIZED_OUTPUT" = "YES" ] && tput sgr0
 			;;
 	esac
 }
@@ -35,7 +44,7 @@ function setColor
 # reset terminal to standard colors
 function resetColor
 {
-	tput sgr0
+	[ "$COLORIZED_OUTPUT" = "YES" ] && tput sgr0
 }
 function ERROR
 {
@@ -119,8 +128,16 @@ do
 					setColor reset
 					not_before=$(grep "Not Before" ${certFileTXT} | cut -d : -f 2- | sed -e "s#^ ##" | head -n 1 )
 					not_after=$(grep "Not After" ${certFileTXT} | cut -d : -f 2-  | sed -e "s#^ ##" | head -n 1 )
-					[ -n "$not_before" ] || ERROR "could not detect not-before date from cert in txt from"
-					[ -n "$not_after" ] || ERROR "could not detect not-after date from cert in txt from"
+					if [ -z "$not_before" ]
+					then
+						ERROR "could not detect not-before date from cert in txt from"
+						ERROR_MSG="bad TXT format"
+					fi
+					if [ -z "$not_after" ]
+					then
+						ERROR "could not detect not-after date from cert in txt from"
+						ERROR_MSG="bad TXT format"
+					fi
 					if [ -n "$not_before" -a -n "$not_after" ]
 					then
 						echo " type: $certType"
@@ -164,20 +181,28 @@ do
 	else
 		exitStatus=2
 		ERROR "Missing or not updated TXT form of certificate"
+		ERROR_MSG="Missing/old TXT form of certificate"
 	fi
 done
 
 echo
 echo "[nagiosreport]"
+
+# in case of verbose stdout is not redirected
+if [ "$VERBOSE" != "YES" ]
+then
+	exec 1>&3
+fi
+
 case "${exitStatus}" in
 	0)
-		echo "certs ok - ok:$sumOK warning:$sumWarning critical:$sumCritical"
+		echo "status ok: ok:$sumOK warning:$sumWarning critical:$sumCritical"
 		;;
 	1)
-		echo "CERTS WARN - ok:$sumOK warning:$sumWarning critical:$sumCritical"
+		echo "STATUS WARNING: ok:$sumOK warning:$sumWarning critical:$sumCritical"
 		;;
 	*)
-		echo "CERTS CRITICAL - ok:$sumOK warning:$sumWarning critical:$sumCritical"
+		echo "STATUS CRITICAL: ok:$sumOK warning:$sumWarning critical:$sumCritical ERROR_MSG:$ERROR_MSG"
 		;;
 esac
 exit $exitStatus
