@@ -6,7 +6,7 @@
 if [ "$VERBOSE" != "YES" ]
 then
 	exec 3>&1
-	exec 1>/tmp/check_certstore.log
+	exec 1>"/tmp/check_certstore_${USER}.log"
 fi
 
 supportedCertTypes="pem|crt|p12|jks"
@@ -182,6 +182,7 @@ do
 								((sumWarning++))
 								setColor yellow
 								echo " status: WARNING"
+								WARN_MSG="${certFile}:${subCertIndex} $WARN_MSG"
 								setColor reset
 							else
 								((sumOK++))
@@ -226,7 +227,7 @@ case "${exitStatus}" in
 		echo "STATUS WARNING: ok:$sumOK warning:$sumWarning critical:$sumCritical"
 		;;
 	*)
-		echo "STATUS CRITICAL: ok:$sumOK warning:$sumWarning critical:$sumCritical ERROR_MSG:$ERROR_MSG"
+		echo "STATUS CRITICAL: ok:$sumOK warning:$sumWarning critical:$sumCritical ERROR_MSG:$ERROR_MSG WARN_MSG:$WARN_MSG"
 		;;
 esac
 exit $exitStatus
