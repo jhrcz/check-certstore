@@ -1,3 +1,10 @@
+nagios-plugins-certstore (2.3) jaunty; urgency=low
+
+  * WARN_MSG in nagios output, per user log in /tmp fixes no output from client message
+  * better error handling
+
+ -- jahor <jahor@deebee>  Thu, 19 Mar 2009 14:37:50 +0100
+
 nagios-plugins-certstore (2.2) jaunty; urgency=low
 
   * certfificates in lilst file possibility
