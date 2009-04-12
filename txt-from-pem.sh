@@ -7,7 +7,7 @@ tmpFileIndexedPEM=$(mktemp)
 tmpFile=$(mktemp)
 
 certnum=0
-cat ${certFile} | while read line2
+(cat ${certFile} ; echo ) | while read line2
 do
 	if echo "$line2" | grep -q "BEGIN CERTIFICATE"
 	then
