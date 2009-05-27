@@ -167,7 +167,7 @@ do
 						echo " not-before: $not_before"
 						echo " not-after: $not_after"
 						# check expiration date
-						if [ "$(date -d "$not_after" +%s)" -lt "$(date -d "today" +%s)" ]
+						if [ "$(date -d "$not_after" +%s)" -lt "$(date -d "today + 1 month" +%s)" ]
 						then
 							exitStatus=2
 							((sumCritical++))
