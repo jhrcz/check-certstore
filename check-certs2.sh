@@ -132,10 +132,40 @@ do
 		certType=$(getCertType "${certFile}")
 		case "${certType}" in
 			pem|p12|jks)
-				subCertMaxIndex=$(tail -n 1 "${multiCertFileTXT}" | cut -d : -f 1)
+				subCertMaxIndex=$(tail -n 1 "${multiCertFileTXT}"  2>/dev/null | cut -d : -f 1)
+
+				# sanitycheck pozdeji kontrolovan aby nebylo vubec iterovano
+				# kdyz by maxindex byl nulovy nebo puvodne nebyl zjistitelny
+				# prefix nulou zajisti ze i prazdny string je cislo
+				if [ -n "${subCertMaxIndex}" -a "0${subCertMaxIndex}" -gt "0" ]
+				then
+					true
+				else
+					subCertMaxIndex=0
+					exitStatus=2
+					ERROR "empty txt variant or file unreadable: ${certFile}"
+					ERROR_MSG="empty-txt-or-unreadable:${certFile} $ERROR_MSG"
+				fi
+
 				echo " subcerts: $subCertMaxIndex"
 				for subCertIndex in $( seq 1 $subCertMaxIndex )
 				do
+
+					#
+					# neiterovat pokud byl nulovy pocet certu
+					# nebo nebyl zjistitelny viz sanitycheck drive
+					# tento check je zde navic pokud je 0 tak se sem pres
+					# seq ani nedostane
+					if [ "${subCertMaxIndex}" -gt "0" ]
+					then
+						true
+					else
+						exitStatus=2
+						ERROR "empty txt variant or file unreadable: ${certFile}"
+						ERROR_MSG="empty-txt-or-unreadable $ERROR_MSG"
+						break
+					fi
+
 					certFileTXT=$(mktemp)
 					grep "^${subCertIndex}:" "${multiCertFileTXT}" | cut -d : -f 2- > "${certFileTXT}"
 					echo
@@ -217,6 +247,18 @@ fi
 if [ -z "$ERROR_MSG" ]
 then
 	ERROR_MSG=none
+fi
+
+
+#
+# sanitycheck a chybovy stav kdyz nic neni OK
+if [ "${sumOK}" -gt "0" ]
+then
+	true
+else
+	exitStatus=2
+	ERROR "No certificate found in ok state $ERROR"
+	ERROR_MSG="none-in-ok-state $ERROR_MSG"
 fi
 
 case "${exitStatus}" in
