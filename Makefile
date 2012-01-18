@@ -25,10 +25,11 @@ step-install-log: test-destdir
 install-bin: step-install-bin
 #step-install-bin: test-destdir nagios-plugins-certstore.sh
 step-install-bin: test-destdir
-	install -D      check-certs2.sh         $(DESTDIR)/usr/lib64/nagios/plugins/check_certstore
-	install -D      txt-from-jks.sh         $(DESTDIR)/usr/bin/txt-from-jks.sh
-	install -D      txt-from-pem.sh         $(DESTDIR)/usr/bin/txt-from-pem.sh
-	install -D      txt-from-p12.sh         $(DESTDIR)/usr/bin/txt-from-p12.sh
+	install -D nrpe-check_certstore.cfg 	$(DESTDIR)/etc/nrpe.d/check_certstore.cfg
+	install -D check-certs2.sh         	$(DESTDIR)/usr/lib64/nagios/plugins/check_certstore
+	install -D txt-from-jks.sh         	$(DESTDIR)/usr/bin/txt-from-jks.sh
+	install -D txt-from-pem.sh         	$(DESTDIR)/usr/bin/txt-from-pem.sh
+	install -D txt-from-p12.sh         	$(DESTDIR)/usr/bin/txt-from-p12.sh
 
 	touch step-install-bin
 

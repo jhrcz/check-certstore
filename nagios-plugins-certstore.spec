@@ -32,6 +32,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root,-)
+%config(noreplace) %attr(644,root,root) /etc/nrpe.d/check_certstore.cfg
 /usr/bin/txt-from-jks.sh
 /usr/bin/txt-from-pem.sh
 /usr/bin/txt-from-p12.sh
