@@ -43,4 +43,7 @@ rm -rf $RPM_BUILD_ROOT
 %changelog
 * Wed Jan 18 2012 <jahor@jhr.cz> 2.5-0
 - rpm-ification
+- predpripraveny example do /etc/nrpe.d/
+- zmena buildovani na make
+- moznost ackovani jednotlivych certifikatu aby nepropadly do nagiosu pri vyprseni v souborech .txt.ack
 

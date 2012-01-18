@@ -1,0 +1,13 @@
+* release 2.5
+- ack support with .txt.ack
+- nrpe config
+- makefile for instalation
+- rpm packaging
+
+* release 2.4 (and previous)
+- report critical when txt is not readable , check that none cert in is OK state
+- critical 1 month before expiration and not in the day of expiration
+- WARN_MSG in nagios output, per user log in /tmp fixes no output from client message
+- certstore list from file support
+- support for multi-cert keystores
+

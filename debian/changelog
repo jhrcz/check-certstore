@@ -1,6 +1,8 @@
 nagios-plugins-certstore (2.5) jaunty; urgency=low
 
   * pkg building switching to makefile from debian rules only
+  * predpripraveny example do /etc/nrpe.d/
+  * moznost ackovani jednotlivych certifikatu aby nepropadly do nagiosu privyprseni v souborech .txt.ack
 
  -- jahor <jahor@jhr.cz>  Wed, 18 Jan 2012 09:33:00 +0200
 
