@@ -196,24 +196,55 @@ do
 						not_after=$(date -d "$not_after" +%Y-%m-%d)
 						echo " not-before: $not_before"
 						echo " not-after: $not_after"
+
+						# ackovani certifikatu po vyprseni platnosti
+						acknowledged=NO
+						ackend="0000-00-00"
+						if [ -f "${multiCertFileTXT}.ack" ]
+						then
+							ackline=$(grep "^${subject}|${issuer}|${not_after}|" "${multiCertFileTXT}.ack")
+							if [ -n "$ackline" ]
+							then
+								ackend=$(echo "$ackline" | cut -d "|" -f 4)
+								if [ "$(date -d "$ackend" +%s)" -ge "$(date -d "today" +%s)" ]
+								then
+									acknowledged=YES
+								fi
+							fi
+						fi
+
 						# check expiration date
 						if [ "$(date -d "$not_after" +%s)" -lt "$(date -d "today + 1 month" +%s)" ]
 						then
-							exitStatus=2
-							((sumCritical++))
+							if [ "$acknowledged" != "YES"  ]
+							then
+								exitStatus=2
+								((sumCritical++))
+							fi
 							setColor red
 							echo " status: CRITICAL"
 							ERROR_MSG="${certFile}:${subCertIndex} $ERROR_MSG"
 							setColor reset
+							if [ "$acknowledged" = "YES"  ]
+							then
+								echo " acknowledged: YES ($ackend)"
+							fi
 						else
 							if [ "$(date -d "$not_after" +%s)" -lt "$(date -d "today + 1 month" +%s)" ]
 							then
-								exitStatus=2
-								((sumWarning++))
+								if [ "$acknowledged" != "YES"  ]
+								then
+									exitStatus=2
+									((sumWarning++))
+								fi
 								setColor yellow
 								echo " status: WARNING"
 								WARN_MSG="${certFile}:${subCertIndex} $WARN_MSG"
 								setColor reset
+								if [ "$acknowledged" = "YES"  ]
+								then
+									echo " acknowledged: YES ($ackend)"
+								fi
 							else
 								((sumOK++))
 								setColor green
