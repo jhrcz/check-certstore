@@ -1,3 +1,9 @@
+nagios-plugins-certstore (2.5) jaunty; urgency=low
+
+  * pkg building switching to makefile from debian rules only
+
+ -- jahor <jahor@jhr.cz>  Wed, 18 Jan 2012 09:33:00 +0200
+
 nagios-plugins-certstore (2.4) jaunty; urgency=low
 
   * report error state when none in OK state and when txt variant unreadable
