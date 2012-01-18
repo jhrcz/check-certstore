@@ -220,14 +220,17 @@ do
 							then
 								exitStatus=2
 								((sumCritical++))
+								ERROR_MSG="${certFile}:${subCertIndex} $ERROR_MSG"
 							fi
 							setColor red
 							echo " status: CRITICAL"
-							ERROR_MSG="${certFile}:${subCertIndex} $ERROR_MSG"
 							setColor reset
 							if [ "$acknowledged" = "YES"  ]
 							then
 								echo " acknowledged: YES ($ackend)"
+								# nutne zde navysit aby nevznikl certstore bez certifikatu v OK stavu
+								((sumOK++))
+								WARN_MSG="${certFile}:${subCertIndex}:ack($ackend) $WARN_MSG"
 							fi
 						else
 							if [ "$(date -d "$not_after" +%s)" -lt "$(date -d "today + 1 month" +%s)" ]
@@ -236,14 +239,17 @@ do
 								then
 									exitStatus=2
 									((sumWarning++))
+									WARN_MSG="${certFile}:${subCertIndex} $WARN_MSG"
 								fi
 								setColor yellow
 								echo " status: WARNING"
-								WARN_MSG="${certFile}:${subCertIndex} $WARN_MSG"
 								setColor reset
 								if [ "$acknowledged" = "YES"  ]
 								then
 									echo " acknowledged: YES ($ackend)"
+									# nutne zde navysit aby nevznikl certstore bez certifikatu v OK stavu
+									((sumOK++))
+									WARN_MSG="${certFile}:${subCertIndex}:ack($ackend) $WARN_MSG"
 								fi
 							else
 								((sumOK++))
@@ -294,7 +300,7 @@ fi
 
 case "${exitStatus}" in
 	0)
-		echo "status ok: ok:$sumOK warning:$sumWarning critical:$sumCritical"
+		echo "status ok: ok:$sumOK warning:$sumWarning critical:$sumCritical WARN_MSG:$WARN_MSG"
 		;;
 	1)
 		echo "STATUS WARNING: ok:$sumOK warning:$sumWarning critical:$sumCritical"
