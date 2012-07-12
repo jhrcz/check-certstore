@@ -105,7 +105,7 @@ case "${argType}" in
 		;;
 	*)
 		exitStatus=2
-		ERROR "Bad arguments."
+		ERROR "Bad arguments in input source detection."
 		ERROR_MSG="bad-cmd-arg $ERROR_MSG"
 		WARN_MSG="dir-or-file-not-found-or-bad-perms $WARN_MSG"
 		;;
@@ -114,7 +114,7 @@ esac
 if [ -z "$certFiles" ]
 then
 	exitStatus=2
-	ERROR "Bad arguments."
+	ERROR "Bad arguments, no certs found."
 	ERROR_MSG="no-certfile-specified $ERROR_MSG"
 fi
 
