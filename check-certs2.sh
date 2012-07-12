@@ -9,7 +9,7 @@ then
 	exec 1>"/tmp/check_certstore_${USER}.log"
 fi
 
-supportedCertTypes="pem|crt|p12|jks"
+supportedCertTypes="pem|crt|p12|jks|pfx"
 exitStatus=0
 sumCritical=0
 sumOK=0
@@ -71,7 +71,7 @@ function getCertType
 		pem|crt)
 			echo pem
 			;;
-		p12)
+		p12|pfx)
 			echo p12
 			;;
 		jks)
