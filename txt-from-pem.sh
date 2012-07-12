@@ -27,6 +27,7 @@ do
 done
 
 cp ${tmpFile} ${certFile}.txt
+chmod 644 ${certFile}.txt
 
 rm "${tmpFile}"
 rm "${tmpFileIndexedPEM}"
