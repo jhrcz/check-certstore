@@ -85,10 +85,10 @@ if [ "${1}" = "list"  ]
 then
 	argType=list
 	shift
-elif [ -f "${1}" ]
+elif [ -f "${1}" -a -r "${1}" ]
 then
 	argType=file
-elif [ -d "${1}" ]
+elif [ -d "${1}" -a -r "${1}" ]
 then
 	argType=dir
 fi
@@ -107,6 +107,7 @@ case "${argType}" in
 		exitStatus=2
 		ERROR "Bad arguments."
 		ERROR_MSG="bad-cmd-arg $ERROR_MSG"
+		WARN_MSG="dir-or-file-not-found-or-bad-perms $WARN_MSG"
 		;;
 esac
 
