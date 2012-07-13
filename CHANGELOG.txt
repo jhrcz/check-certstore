@@ -1,3 +1,9 @@
+* release 2.6
+- more descriptive message when file or dir is  not readable
+- detect unreadable file or directory, report as critical
+- set 644 permission on txt files explicitly to be readable by nagios
+- pfx input support
+
 * release 2.5
 - ack support with .txt.ack
 - nrpe config

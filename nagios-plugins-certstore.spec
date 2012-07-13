@@ -1,5 +1,5 @@
 Name: 		nagios-plugins-certstore
-Version: 	2.5
+Version: 	2.6
 Release:	0%{?dist}
 Summary:	Run nagios-plugins-certstore
 BuildArch: 	noarch
@@ -41,6 +41,12 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Fri Jun 13 2012 <jahor@jhr.cz> 2.6-0
+- presnejsi hlaseni misto pouheho Bad arguments
+- kontroly na citelnosti zdroje v prvni fazi a warn o necitelnost/neexistenci
+- prava 644 explicitne na generovane txt podoby
+- podpora pro pfx suffix od pme
+
 * Wed Jan 18 2012 <jahor@jhr.cz> 2.5-0
 - rpm-ification
 - predpripraveny example do /etc/nrpe.d/
